@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MDA | Sistema de Vistorias</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+<header><div><strong>MDA Engenharia</strong><span>Sistema de Vistorias e Plano de Manutenção</span></div><nav>
+<button onclick="showView('dashboard')">Painel</button><button onclick="showView('inspection')">Nova vistoria</button><button onclick="showView('maintenance')">Manutenção</button><button onclick="showView('reports')">Relatórios</button>
+</nav></header>
+<main>
+<section id="dashboard" class="view active">
+<h1>Painel operacional</h1>
+<div class="metrics"><div><b id="mInspections">0</b><span>Vistorias</span></div><div class="red"><b id="mHigh">0</b><span>Prioridade alta</span></div><div class="orange"><b id="mProgram">0</b><span>Programar</span></div><div class="yellow"><b id="mMonitor">0</b><span>Monitorar</span></div><div class="blue"><b id="mFollow">0</b><span>Acompanhar</span></div></div>
+<div class="card"><h2>Constatações pendentes</h2><div id="pending"></div></div>
+</section>
+
+<section id="inspection" class="view">
+<div class="titleRow"><h1 id="inspectionTitle">Nova vistoria</h1><button class="secondary" onclick="newInspection()">Limpar</button></div>
+<div class="card"><h2>1. Identificação</h2><div class="grid">
+<label>Tipo de atendimento<select id="type"><option>Vistoria técnica geral</option><option>Condomínio residencial</option><option>Comércio</option><option>Prédio de escritórios</option><option>Projeto novo</option><option>Regularização</option></select></label>
+<label>Cliente / responsável<input id="client"></label><label>Imóvel / empreendimento<input id="property"></label><label>Endereço<input id="address"></label>
+<label>Data<input id="date" type="date"></label><label>Vistoriador<input id="inspector"></label><label>Contato no local<input id="contact"></label><label>Escopo contratado<input id="scope"></label>
+</div><label>Objetivo, limitações e observações iniciais<textarea id="limitations"></textarea></label></div>
+
+<div class="card"><h2>2. Registrar constatação</h2>
+<div class="grid"><label>Área técnica<select id="area"><option>Estrutura e envoltória</option><option>Elétrica e SPDA</option><option>Gás</option><option>Incêndio e emergência</option><option>Hidráulica e sanitária</option><option>Acessibilidade</option><option>Rotas e circulação</option><option>Arquitetura e acabamentos</option><option>Documentação e regularização</option><option>Manutenção</option><option>Outro</option></select></label>
+<label>Localização<input id="location" placeholder="Ex.: cobertura / QDG-02"></label></div>
+<label>Constatação objetiva<input id="findingTitle"></label><label>Descrição / contexto<textarea id="description"></textarea></label>
+<div class="grid"><label>Risco / consequência<input id="risk"></label><label>Ação recomendada<input id="action"></label><label>Responsável sugerido<input id="responsible"></label><label>Prazo / revisão<input id="deadline"></label></div>
+<label>Evidência (foto, documento, vídeo, referência)<textarea id="evidence"></textarea></label>
+<input type="file" id="photo" accept="image/*" capture="environment">
+<div class="priority"><button class="pHigh" onclick="setPriority('Alta')">PRIORIDADE ALTA</button><button class="pProgram" onclick="setPriority('Programar')">PROGRAMAR</button><button class="pMonitor" onclick="setPriority('Monitorar')">MONITORAR</button><button class="pFollow" onclick="setPriority('Acompanhar')">ACOMPANHAR</button></div>
+<p id="priorityText" class="notice">Classificação selecionada: Acompanhar</p>
+<button onclick="addFinding()">Adicionar à vistoria</button></div>
+
+<div class="card"><h2>3. Constatações da vistoria</h2><div id="findingList"></div></div>
+<div class="card"><h2>4. Conclusão e decisão</h2><label>Síntese técnica / próximos passos<textarea id="summary"></textarea></label>
+<div class="actions"><button onclick="saveInspection()">Salvar vistoria</button><button onclick="generateReport()">Gerar relatório</button><button class="secondary" onclick="exportData()">Exportar dados JSON</button></div></div>
+</section>
+
+<section id="maintenance" class="view"><h1>Plano de manutenção</h1><div class="card"><h2>Adicionar ação ao plano</h2><div class="grid"><label>Sistema/ativo<input id="asset"></label><label>Periodicidade<input id="frequency" placeholder="Mensal, trimestral..."></label><label>Responsável<input id="maintResponsible"></label><label>Próxima data<input id="nextDate" type="date"></label></div><label>Rotina / procedimento<textarea id="routine"></textarea></label><label>Evidência exigida<textarea id="maintEvidence"></textarea></label><button onclick="addMaintenance()">Adicionar item</button></div><div class="card"><h2>Agenda de manutenção</h2><div id="maintenanceList"></div></div></section>
+
+<section id="reports" class="view"><h1>Vistorias e relatórios</h1><div class="card"><div id="inspectionList"></div></div></section>
+</main>
+<div id="modal" class="modal"><div class="modalContent"><button class="close" onclick="closeModal()">×</button><div id="reportContent"></div></div></div>
+<script src="app.js"></script></body></html>
